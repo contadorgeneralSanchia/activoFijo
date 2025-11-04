@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>{{ APP_TITLE }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+      body {font-family: Arial, sans-serif; background:#f4f4f9; margin:0; padding:0;}
+      header {background:#0f766e; color:#fff; padding:15px;}
+      h1 {margin:0;}
+      .container {padding:20px;}
+      table {width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden;}
+      th, td {padding:10px; border-bottom:1px solid #ddd; text-align:left;}
+      th {background:#0f766e; color:white;}
+      tr:hover {background:#f2f2f2;}
+      a.btn {background:#0f766e; color:#fff; padding:6px 10px; border-radius:6px; text-decoration:none;}
+      a.btn:hover {background:#0a4f4b;}
+      input[type="text"] {padding:6px; width:250px; margin-bottom:15px;}
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>{{ APP_TITLE }}</h1>
+    </header>
+    <div class="container">
+      <h2>Listado de todos los activos</h2>
+      <input type="text" id="searchInput" placeholder="Buscar por código o nombre..." onkeyup="filterTable()">
+      <p>Total de activos: <strong>{{ count }}</strong></p>
+
+      <table id="activosTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Ubicación</th>
+            <th>Departamento</th>
+            <th>Ver Ficha</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in all %}
+          <tr>
+            <td>{{ a.id }}</td>
+            <td>{{ a.codigo }}</td>
+            <td>{{ a.nombre }}</td>
+            <td>{{ a.ubicacion }}</td>
+            <td>{{ a.departamento }}</td>
+            <td><a class="btn" href="{{ url_for('asset_detail', asset_id=a.id) }}">Ver</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      function filterTable() {
+        var input = document.getElementById("searchInput");
+        var filter = input.value.toLowerCase();
+        var table = document.getElementById("activosTable");
+        var trs = table.getElementsByTagName("tr");
+        for (var i = 1; i < trs.length; i++) {
+          var tds = trs[i].getElementsByTagName("td");
+          var found = false;
+          for (var j = 0; j < tds.length-1; j++) {
+            if (tds[j].innerText.toLowerCase().includes(filter)) {
+              found = true;
+              break;
+            }
+          }
+          trs[i].style.display = found ? "" : "none";
+        }
+      }
+    </script>
+  </body>
+</html>

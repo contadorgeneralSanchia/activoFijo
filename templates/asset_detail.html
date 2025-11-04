@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Ficha del Activo {{ activo.codigo }}</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f7f8f9;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background: #0f766e;
+        color: white;
+        padding: 15px;
+        text-align: center;
+      }
+      .container {
+        max-width: 800px;
+        margin: 25px auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        padding: 25px;
+      }
+      h1 {
+        color: #0f766e;
+        margin-bottom: 5px;
+      }
+      h3 {
+        color: #333;
+        margin-top: 10px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+      td {
+        padding: 8px 6px;
+        border-bottom: 1px solid #eee;
+      }
+      td:first-child {
+        font-weight: bold;
+        width: 35%;
+        color: #444;
+      }
+      .qr {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .qr img {
+        width: 150px;
+      }
+      .footer {
+        text-align: center;
+        color: #777;
+        margin-top: 25px;
+        font-size: 0.9em;
+      }
+      .back {
+        display: inline-block;
+        margin-top: 15px;
+        background: #0f766e;
+        color: white;
+        padding: 8px 12px;
+        text-decoration: none;
+        border-radius: 6px;
+      }
+      .back:hover {
+        background: #0b504a;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Ficha del Activo Fijo</h1>
+    </header>
+    <div class="container">
+      <h3>{{ activo.nombre }}</h3>
+      <p><strong>Código:</strong> {{ activo.codigo }}</p>
+
+      <table>
+        <tr><td>Fecha de Adquisición:</td><td>{{ activo.fecha_adquisicion or "-" }}</td></tr>
+        <tr><td>Fecha de Inicio de Uso:</td><td>{{ activo.fecha_inicio_uso or "-" }}</td></tr>
+        <tr><td>Meses de Depreciación:</td><td>{{ activo.meses_depreciacion or "-" }}</td></tr>
+        <tr><td>Ubicación:</td><td>{{ activo.ubicacion or "-" }}</td></tr>
+        <tr><td>Departamento:</td><td>{{ activo.departamento or "-" }}</td></tr>
+        <tr><td>Serie:</td><td>{{ activo.serie or "-" }}</td></tr>
+        <tr><td>Costo de Adquisición:</td><td>${{ "{:,.2f}".format(activo.costo_adquisicion or 0) }}</td></tr>
+        <tr><td>Valor Total a Depreciar:</td><td>${{ "{:,.2f}".format(activo.total_depreciado or 0) }}</td></tr>
+        <tr><td>% Depreciación Anual:</td><td>{{ "{:.2f}".format(activo.pct_depreciacion_anual or 0) }}%</td></tr>
+        <tr><td>Depreciación Acumulada:</td><td>${{ "{:,.2f}".format(activo.depreciacion_acumulada or 0) }}</td></tr>
+        <tr><td>Saldo por Depreciar:</td><td>${{ "{:,.2f}".format(activo.saldo_por_depreciar or 0) }}</td></tr>
+      </table>
+
+      <div class="qr">
+        <img src="{{ url_for('static', filename='qr/' + activo.qr_uid + '.png') }}" alt="QR del activo">
+        <p><small>Escanee este código para ver esta ficha en línea</small></p>
+      </div>
+
+      <div class="footer">
+        <a href="{{ url_for('index') }}" class="back">← Volver al listado</a>
+        <p>Sistema de Activo Fijo — Industrias Sanchia, S.A. de C.V.</p>
+      </div>
+    </div>
+  </body>
+</html>
